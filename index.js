@@ -9,9 +9,9 @@ app.use(morgan("dev"));
 app.use(fileUpload());
 app.set("view engine", "pug");
 
-app.get("/form", (req, res) => {
-	res.render("form");
-});
+const getFiles = () => {
+	return ls("./uploads/*");
+}
 
 app.post("/upload", (req, res) => {
 	console.log(req.files);
@@ -20,16 +20,17 @@ app.post("/upload", (req, res) => {
 		if (err) {
 			res.send(err)
 		} else {
-			res.send("file uploaded")
+			res.redirect("/?msg=file+uploaded");
 		}
 	});
 });
 
-app.get("/list", (req, res) => {
-	const files = ls("./uploads/*");
-	var fileNames = files.map(item => item.full); 
-	console.log(fileNames);
-	res.render("list", { files: fileNames });
+
+app.get("/", (req, res) => {
+	const message = req.query.msg;
+	const files = getFiles();
+	console.log(files);
+	res.render("list", { files, message });
 });
 
 app.get("/uploads/:name", (req, res) => {
