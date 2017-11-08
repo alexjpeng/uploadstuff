@@ -8,6 +8,7 @@ const app = express();
 app.use(morgan("dev"));
 app.use(fileUpload());
 app.set("view engine", "pug");
+app.use("/static", express.static(path.join(__dirname, "static")));
 
 const getFiles = () => {
 	return ls("./uploads/*");
@@ -16,21 +17,25 @@ const getFiles = () => {
 app.post("/upload", (req, res) => {
 	console.log(req.files);
 	const uploadFile = req.files.uploadFile;
-	uploadFile.mv(`./uploads/${uploadFile.name}`, (err) => {
-		if (err) {
-			res.send(err)
-		} else {
-			res.redirect("/?msg=file+uploaded");
-		}
-	});
+	if (uploadFile === undefined) {
+		const files = getFiles();
+		res.render("list", { files, message: "No file selected", messageType: "danger" });
+	} else {
+		uploadFile.mv(`./uploads/${uploadFile.name}`, (err) => {
+			const files = getFiles();
+			if (err) {
+				res.render("list", { files, message: "File Error", messageType: "danger" });
+			} else {
+				res.render("list", { files, message: "File Uploaded", messageType: "success" });
+			}
+		});
+	}
 });
 
 
 app.get("/", (req, res) => {
-	const message = req.query.msg;
 	const files = getFiles();
-	console.log(files);
-	res.render("list", { files, message });
+	res.render("list", { files });
 });
 
 app.get("/uploads/:name", (req, res) => {
