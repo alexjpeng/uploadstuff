@@ -24,6 +24,7 @@ app.post("/upload", (req, res) => {
 		uploadFile.mv(`./uploads/${uploadFile.name}`, (err) => {
 			const files = getFiles();
 			if (err) {
+				console.log(err);
 				res.render("list", { files, message: "File Error", messageType: "danger" });
 			} else {
 				res.render("list", { files, message: "File Uploaded", messageType: "success" });
