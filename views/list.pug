@@ -8,15 +8,16 @@ html
         script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js")
         script(src="/static/main.js")
     body
-        h1 Upload files
-        if message
-            p(class=`alert alert-${messageType} alert-dismissible fade show`)= message
-                button(type="button", class="close", data-dismiss="alert")
-                    span &times;
-        form(action='/upload', method='POST', enctype='multipart/form-data')
-            input(type='file', name='uploadFile')
-            button(type="submit") Submit
-        ul(class='list-unstyled')
-            each file in files
-                li
-                    a(href=file.full)= file.file
+        div(class="container")
+            h1 Upload files
+            if message
+                p(class=`alert alert-${messageType} alert-dismissible fade show`)= message
+                    button(type="button", class="close", data-dismiss="alert")
+                        span &times;
+            form(action='/upload', method='POST', enctype='multipart/form-data')
+                input(type='file', name='uploadFile')
+                button(type="submit") Submit
+            div(id="item-boxes")
+                each file in files
+                     a(href=file.full)
+                        div(class="item-box")= file.file

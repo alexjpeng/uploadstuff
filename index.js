@@ -42,4 +42,4 @@ app.get("/uploads/:name", (req, res) => {
 	res.sendFile(path.join(__dirname, "uploads", req.params.name))
 });
 
-app.listen(8080);
+app.listen(process.env.PORT || 8080);
