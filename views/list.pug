@@ -17,7 +17,7 @@ html
             form(action='/upload', method='POST', enctype='multipart/form-data')
                 input(type='file', name='uploadFile')
                 button(type="submit") Submit
-            div(id="item-boxes")
+            div(id="item-boxes", class="btn btn-default")
                 each file in files
                      a(href=file.full)
                         div(class="item-box")= file.file
