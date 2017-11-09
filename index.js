@@ -14,6 +14,13 @@ const getFiles = () => {
 	return ls("./uploads/*");
 }
 
+var fs = require('fs');
+var dir = './tmp';
+
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+}
+
 app.post("/upload", (req, res) => {
 	console.log(req.files);
 	const uploadFile = req.files.uploadFile;
