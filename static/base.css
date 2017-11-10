@@ -10,6 +10,7 @@
     border-radius: 15px;
     border: 2px solid #808080;
     padding: 20px;
+    word-wrap: break-word;    
 }
 
 #item-box-wrapper {
