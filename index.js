@@ -16,11 +16,10 @@ const getExtension = filename => filename.split(".").reverse()[0];
 const getFiles = () => {
 	return ls("./uploads/*")
 		.map(file => {
-			return {
-				...file,
+			return Object.assign({}, file, {
 				extension: getExtension(file.file),
 				encodedName: querystring.escape(file.file)
-			}
+			});
 		});
 }
 
@@ -62,7 +61,7 @@ app.get("/uploads/:name", (req, res) => {
 
 app.get("/files/:filename/delete", (req, res) => {
 	const filename = req.params.filename;
-	fs.unlinkSync(`./uploads/${filename}`);
+	fs.unlinkSync(`./uploads/${filename}git `);
 	const files = getFiles();
 	res.render("list", { files, message: `Deleted ${filename}`, messageType: "success" });
 })
