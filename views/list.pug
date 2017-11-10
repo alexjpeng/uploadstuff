@@ -1,5 +1,6 @@
 html
     head
+        meta(http-equiv="expires", content="0")
         title Home
         link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css")
         link(rel="stylesheet", href="/static/base.css")
@@ -17,7 +18,8 @@ html
             form(action='/upload', method='POST', enctype='multipart/form-data')
                 input(type='file', name='uploadFile')
                 button(type="submit") Submit
-            div(id="item-boxes", class="btn btn-default")
+            div(id="item-boxes")
                 each file in files
-                     a(href=file.full)
-                        div(class="item-box")= file.file
+                    div(id="item-box-wrapper")
+                        a(href=file.full)
+                            div(class="item-box")= file.file

@@ -42,6 +42,7 @@ app.post("/upload", (req, res) => {
 
 app.get("/", (req, res) => {
 	const files = getFiles();
+	res.set("cache-control", "private, max-age=0, no-cache, no-store")
 	res.render("list", { files });
 });
 
