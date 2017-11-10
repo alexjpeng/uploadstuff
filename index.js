@@ -3,6 +3,7 @@ const morgan = require("morgan");
 const path = require("path");
 const fileUpload = require("express-fileupload");
 const ls = require("ls");
+const querystring = require("querystring");
 
 const app = express();
 app.use(morgan("dev"));
@@ -10,8 +11,17 @@ app.use(fileUpload());
 app.set("view engine", "pug");
 app.use("/static", express.static(path.join(__dirname, "static")));
 
+const getExtension = filename => filename.split(".").reverse()[0];
+
 const getFiles = () => {
-	return ls("./uploads/*");
+	return ls("./uploads/*")
+		.map(file => {
+			return {
+				...file,
+				extension: getExtension(file.file),
+				encodedName: querystring.escape(file.file)
+			}
+		});
 }
 
 var fs = require('fs');
@@ -49,5 +59,12 @@ app.get("/", (req, res) => {
 app.get("/uploads/:name", (req, res) => {
 	res.sendFile(path.join(__dirname, "uploads", req.params.name))
 });
+
+app.get("/files/:filename/delete", (req, res) => {
+	const filename = req.params.filename;
+	fs.unlinkSync(`./uploads/${filename}`);
+	const files = getFiles();
+	res.render("list", { files, message: `Deleted ${filename}`, messageType: "success" });
+})
 
 app.listen(process.env.PORT || 8080);

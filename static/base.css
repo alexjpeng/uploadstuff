@@ -10,7 +10,7 @@
     border-radius: 15px;
     border: 2px solid #808080;
     padding: 20px;
-    word-wrap: break-word;    
+    word-wrap: break-word; 
 }
 
 #item-box-wrapper {
@@ -20,4 +20,10 @@
 
 .container {
     margin-top: 50px;
+}
+
+.center {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
