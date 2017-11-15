@@ -61,7 +61,7 @@ app.get("/uploads/:name", (req, res) => {
 
 app.get("/files/:filename/delete", (req, res) => {
 	const filename = req.params.filename;
-	fs.unlinkSync(`./uploads/${filename}git `);
+	fs.unlinkSync(`./uploads/${filename}`);
 	const files = getFiles();
 	res.render("list", { files, message: `Deleted ${filename}`, messageType: "success" });
 })
