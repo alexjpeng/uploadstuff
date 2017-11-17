@@ -15,14 +15,14 @@ app.use("/static", express.static(path.join(__dirname, "static")));
 
 const getExtension = filename => filename.split(".").reverse()[0];
 
-console.log(process.env)
-
 const authValid = credentials => {
 	return credentials && credentials.name == process.env.AUTH_USERNAME && credentials.pass == process.env.AUTH_PASSWORD
 }
 
 const authMiddleware = () => (req, res, next) => {
 	const credentials = basicAuth(req);
+	console.log('i got here');
+
 	if (authValid(credentials)) {
 		req.auth = credentials;
 		next()
@@ -36,7 +36,6 @@ const authMiddleware = () => (req, res, next) => {
 
 const userMiddleware = () => (req, res, next) => {
 	const credentials = basicAuth(req);
-	console.log(credentials);
 	if (authValid(credentials)) {
 		req.auth = credentials;
 		next();

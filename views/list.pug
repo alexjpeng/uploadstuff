@@ -10,7 +10,7 @@ html
         script(src="/static/main.js")
     body
         div(class="container")
-            h1 Upload files
+            h1(class="center") Upload files
             if message
                 p(class=`alert alert-${messageType} alert-dismissible fade show`)= message
                     button(type="button", class="close", data-dismiss="alert")
@@ -18,7 +18,7 @@ html
             if !auth
                 a(href="/login")
                     button(class="btn btn-success") Login
-            form(action='/upload', method='POST', enctype='multipart/form-data')
+            form(action='/upload', method='POST', enctype='multipart/form-data', class="center")
                 input(type='file', name='uploadFile')
                 button(type="submit") Submit
             div(id="item-boxes")
