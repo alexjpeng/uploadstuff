@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "basic-auth": "^2.0.0",
+    "dotenv": "^4.0.0",
     "express": "^4.16.2",
     "express-fileupload": "^0.3.0",
     "ls": "^0.2.1",

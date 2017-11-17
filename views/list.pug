@@ -15,6 +15,9 @@ html
                 p(class=`alert alert-${messageType} alert-dismissible fade show`)= message
                     button(type="button", class="close", data-dismiss="alert")
                         span &times;
+            if !auth
+                a(href="/login")
+                    button(class="btn btn-success") Login
             form(action='/upload', method='POST', enctype='multipart/form-data')
                 input(type='file', name='uploadFile')
                 button(type="submit") Submit
@@ -40,8 +43,9 @@ html
                                             img(src="/static/assets/icons8-archive.png")
                                         default
                                             img(src="/static/assets/icons8-file.png")
-                                div(class="center")
-                                    a(href=`/files/${file.encodedName}/delete`)
-                                        button(class="btn btn-danger") Delete
+                                if auth
+                                    div(class="center")
+                                        a(href=`/files/${file.encodedName}/delete`)
+                                            button(class="btn btn-danger") Delete
                                         
                                 
