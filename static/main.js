@@ -1,1 +1,3 @@
-window.history.replaceState({}, "Home", "/")
+if (window.location.pathname == "/upload") {
+    window.history.replaceState({}, "Home", "/")
+}

@@ -38,3 +38,13 @@
     right: 16px;
 }
 
+.btn-default {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+}
+
+#backButton {
+    margin-left: 16px;
+    margin-top: 16px;
+}

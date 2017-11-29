@@ -13,6 +13,8 @@ app.use(fileUpload());
 app.set("view engine", "pug");
 app.use("/static", express.static(path.join(__dirname, "static")));
 
+const fileDB = {};
+
 const getExtension = filename => filename.split(".").reverse()[0];
 
 const authValid = credentials => {
@@ -47,9 +49,11 @@ const userMiddleware = () => (req, res, next) => {
 const getFiles = () => {
 	return ls("./uploads/*")
 		.map(file => {
+			console.log(file);
 			return Object.assign({}, file, {
 				extension: getExtension(file.file),
-				encodedName: querystring.escape(file.file)
+				encodedName: querystring.escape(file.file),
+				timestamp: (fileDB[file.file] || {}).timestamp
 			});
 		});
 }
@@ -68,11 +72,15 @@ app.post("/upload", userMiddleware(), (req, res) => {
 		res.render("list", { files, message: "No file selected", messageType: "danger", auth });
 	} else {
 		uploadFile.mv(`./uploads/${uploadFile.name}`, (err) => {
-			const files = getFiles();
 			if (err) {
 				console.log(err);
+				const files = getFiles();
 				res.render("list", { files, message: "File Error", messageType: "danger", auth });
-			} else {
+			} else {	
+				fileDB[uploadFile.name] = {
+					timestamp: (new Date).toString()
+				}
+				const files = getFiles();
 				res.render("list", { files, message: "File Uploaded", messageType: "success", auth });
 			}
 		});
@@ -99,8 +107,17 @@ app.get("/files/:filename/delete", authMiddleware(), (req, res) => {
 	res.render("list", { files, message: `Deleted ${filename}`, messageType: "success", auth });
 })
 
+app.get("/files/:filename", (req, res) => {
+	const file = getFiles()
+		.filter(file => file.file == req.params.filename)[0];
+	res.render("filePage", { file })
+});
+
 app.get("/login", authMiddleware(), (req, res) => {
 	res.redirect("/");
 });
 
+app.get("/filedb", (req, res) => {
+	res.send(fileDB);
+})
 app.listen(process.env.PORT || 8080);
