@@ -13,7 +13,8 @@ app.use(fileUpload());
 app.set("view engine", "pug");
 app.use("/static", express.static(path.join(__dirname, "static")));
 
-const fileDB = {};
+const FileDB = require("./FileDB");
+const fileDb = new FileDB();
 
 const getExtension = filename => filename.split(".").reverse()[0];
 
@@ -49,11 +50,11 @@ const userMiddleware = () => (req, res, next) => {
 const getFiles = () => {
 	return ls("./uploads/*")
 		.map(file => {
-			console.log(file);
+			const fileData = fileDb.get(file.file);
 			return Object.assign({}, file, {
 				extension: getExtension(file.file),
 				encodedName: querystring.escape(file.file),
-				timestamp: (fileDB[file.file] || {}).timestamp
+				timestamp: fileData.timestamp
 			});
 		});
 }
@@ -77,9 +78,9 @@ app.post("/upload", userMiddleware(), (req, res) => {
 				const files = getFiles();
 				res.render("list", { files, message: "File Error", messageType: "danger", auth });
 			} else {	
-				fileDB[uploadFile.name] = {
+				fileDb.set(uploadFile.name, {
 					timestamp: (new Date).toString()
-				}
+				});
 				const files = getFiles();
 				res.render("list", { files, message: "File Uploaded", messageType: "success", auth });
 			}

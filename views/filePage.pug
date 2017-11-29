@@ -15,3 +15,5 @@ html
         div(class="container")
             h1(class="center")= file.file
             h2(class="center")= `uploaded ${file.timestamp}`
+            a(href=`/uploads/${file.file}`, class="center", download)
+                button(class="btn btn-success") Download
