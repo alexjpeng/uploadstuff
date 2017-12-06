@@ -17,3 +17,13 @@ html
             h2(class="center")= `uploaded ${file.timestamp}`
             a(href=`/uploads/${file.file}`, class="center", download)
                 button(class="btn btn-success") Download
+            div(class="center")
+                case file.extension
+                    when "jpeg"
+                        img(src=`/uploads/${file.file}`, style="width: auto; height: 350px; margin-top: 10px")
+                    when "gif"
+                        img(src=`/uploads/${file.file}`, style="width: auto; height: 350px; margin-top: 10px")
+                    when "png"
+                        img(src=`/uploads/${file.file}`, style="width: auto; height: 350px; margin-top: 10px")
+                    when "jpg"
+                        img(src=`/uploads/${file.file}`, style="width: auto; height: 350px; margin-top: 10px")   
