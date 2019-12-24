@@ -19,9 +19,10 @@ html
             if !auth
                 a(href="/login")
                     button(class="btn btn-success", id="loginButton") Login
-            form(action='/upload', method='POST', enctype='multipart/form-data', class="center")
-                input(type='file', name='uploadFile')
-                button(type="submit") Submit
+            if auth
+                form(action='/upload', method='POST', enctype='multipart/form-data', class="center")
+                    input(type='file', name='uploadFile')
+                    button(type="submit") Submit
             include includes/viewList.pug
                                         
                                 
