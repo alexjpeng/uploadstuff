@@ -54,13 +54,19 @@ const userMiddleware = () => (req, res, next) => {
 }
 
 const getFiles = () => {
+	const timeNowInMilliseconds = Date.now()
 	return ls("./uploads/*")
 		.map(file => {
 			const fileData = fileDb.get(file.file);
+			//set file lifetime
+			const MAX_TIME = 30;
+			const uploadTimeInMilliseconds = Date.parse(fileData.timestamp)
+			const fileLifespan = Math.floor(MAX_TIME - (timeNowInMilliseconds - uploadTimeInMilliseconds)/1000)	
 			return Object.assign({}, file, {
 				extension: getExtension(file.file),
 				encodedName: querystring.escape(file.file),
-				timestamp: fileData.timestamp
+				timestamp: fileData.timestamp,
+				lifespan: fileLifespan,
 			});
 		});
 }
@@ -106,6 +112,12 @@ app.get("/viewList", userMiddleware(), (req, res) => {
 	const files = getFiles();
 	const auth = req.auth;
 	console.log(req.cookies);
+	//remove files over MAX_TIME in age
+	for(i=0; i<files.length; i++) {
+		if(files[i].lifespan <= 0) {
+			fs.unlinkSync(`./uploads/${files[i].file}`);
+		}
+	}
 	res.set("cache-control", "private, max-age=0, no-cache, no-store")
 	res.render("includes/viewList", { files, auth });
 });

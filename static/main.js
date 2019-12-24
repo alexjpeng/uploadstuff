@@ -14,7 +14,7 @@ const refresh = () => {
 }
 
 const start = () => {
-    setInterval(refresh, 750);
+    setInterval(refresh, 1000);
 }
 
 window.onload = start;

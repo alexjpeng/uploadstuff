@@ -30,6 +30,7 @@ div(id="item-boxes")
                                 img(src="/static/assets/icons8-archive.png")
                             default
                                 img(src="/static/assets/icons8-file.png")
+                    div(class="center")=file.lifespan
                     if auth
                         div(class="center")
                             a(href=`/files/${file.encodedName}/delete`)
