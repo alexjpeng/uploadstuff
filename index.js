@@ -21,7 +21,7 @@ const fileDb = new FileDB();
 const getExtension = filename => filename.split(".").reverse()[0];
 
 const authValid = credentials => {
-	return credentials && credentials.name == 'admin' && credentials.pass == 'letmeupload‘
+	return credentials && credentials.name == process.env.AUTH_USERNAME && credentials.pass == process.env.AUTH_PASSWORD
 }
 
 const getAuthString = req => req.get('Authorization') || req.cookies.auth;
